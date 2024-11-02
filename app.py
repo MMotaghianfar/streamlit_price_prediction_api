@@ -7,7 +7,7 @@ import io
 # Load model from GitHub with pickle
 @st.cache_resource
 def load_model():
-    url = "https://github.com/MMotaghianfar/streamlit_price_prediction_api/raw/main/price_prediction_model.pkl"
+    url = "https://github.com/MMotaghianfar/streamlit_price_prediction_api/price_prediction_model.pkl"
     response = requests.get(url)
     model = pickle.load(io.BytesIO(response.content))
     return model
