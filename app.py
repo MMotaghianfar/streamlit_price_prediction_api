@@ -4,15 +4,9 @@ import pickle
 import requests
 import io
 
-# Load model from GitHub with pickle
-@st.cache_resource
-def load_model():
-    url = "https://github.com/MMotaghianfar/streamlit_price_prediction_api/price_prediction_model.pkl"
-    response = requests.get(url)
-    model = pickle.load(io.BytesIO(response.content))
-    return model
-
-model = load_model()
+# Load the trained model and scaler
+model = joblib.load('price_prediction_model.pkl')
+scaler = joblib.load('scaler.pkl')
 
 # Title and input fields
 st.title("House Price Prediction App")
