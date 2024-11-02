@@ -5,7 +5,7 @@ import requests
 import io
 
 # Function to load model from GitHub
-@st.cache_resource
+@st.cache  # Use @st.cache instead of @st.cache_resource
 def load_model():
     model_url = "https://github.com/MMotaghianfar/streamlit_price_prediction_api/raw/main/price_prediction_model.pkl"
 
