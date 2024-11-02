@@ -4,19 +4,24 @@ import joblib
 import requests
 import io
 
-# Function to load model from GitHub
-@st.cache  # Use @st.cache instead of @st.cache_resource
-def load_model():
+# Function to load model and scaler from GitHub
+@st.cache
+def load_model_and_scaler():
     model_url = "https://github.com/MMotaghianfar/streamlit_price_prediction_api/raw/main/price_prediction_model.pkl"
+    scaler_url = "https://github.com/MMotaghianfar/streamlit_price_prediction_api/raw/main/scaler.pkl"
 
     # Download and load the model
     model_response = requests.get(model_url)
     model = joblib.load(io.BytesIO(model_response.content))
 
-    return model
+    # Download and load the scaler
+    scaler_response = requests.get(scaler_url)
+    scaler = joblib.load(io.BytesIO(scaler_response.content))
 
-# Load the model
-model = load_model()
+    return model, scaler
+
+# Load the model and scaler
+model, scaler = load_model_and_scaler()
 
 # Title and input fields
 st.title("House Price Prediction App")
@@ -33,6 +38,9 @@ if st.button("Predict Price"):
     input_data = np.array([[Avg_Area_Income, Avg_Area_House_Age, Avg_Area_Number_of_Rooms,
                             Avg_Area_Number_of_Bedrooms, Area_Population]])
     
+    # Scale the input data
+    scaled_input = scaler.transform(input_data)
+    
     # Make prediction and display it
-    prediction = model.predict(input_data)
+    prediction = model.predict(scaled_input)
     st.write(f"Predicted Price: ${prediction[0]:.2f}")
