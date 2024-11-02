@@ -1,19 +1,18 @@
 import streamlit as st
 import numpy as np
-import joblib
+import pickle
 import requests
 import io
 
-# Download model from GitHub and load it
+# Load model from GitHub with pickle
 @st.cache_resource
 def load_model():
-    url = "https://github.com/MMotaghianfar/streamlit_price_prediction_api/raw/76647b66fd6bc3cd9042a2d441cf696e6e88a92d/price_prediction_model.pkl"
+    url = "https://github.com/MMotaghianfar/streamlit_price_prediction_api/raw/main/price_prediction_model.pkl"
     response = requests.get(url)
-    model = joblib.load(io.BytesIO(response.content))
+    model = pickle.load(io.BytesIO(response.content))
     return model
 
 model = load_model()
-
 # Title and input fields
 st.title("House Price Prediction App")
 st.write("Enter the details to predict the house price")
